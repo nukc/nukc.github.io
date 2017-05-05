@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="C君, Nukc, Github" />
+  <meta name="keywords" content="python2, python3, centos6.5, virtualenv," />
 
 
 
@@ -84,12 +84,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="「C」">
-<meta property="og:url" content="http://nukc.github.io/index.html">
+<meta name="description" content="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境supervisor介绍
+由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境">
+<meta property="og:url" content="http://nukc.github.io/2017/03/28/python2-python3-supervisor/index.html">
 <meta property="og:site_name" content="「C」">
+<meta property="og:description" content="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境supervisor介绍
+由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 p">
+<meta property="og:updated_time" content="2017-05-05T04:10:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="「C」">
+<meta name="twitter:title" content="Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境">
+<meta name="twitter:description" content="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境supervisor介绍
+由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 p">
 
 
 
@@ -107,7 +114,7 @@
   };
 </script>
 
-  <title> 「C」 </title>
+  <title> Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境 | 「C」 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -128,9 +135,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -207,9 +212,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -229,207 +234,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2017/04/27/java.lang.NoClassDefFoundError/" itemprop="url">
-                  java.lang.NoClassDefFoundError，坑爹的第三方库
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-27T00:00:00+08:00" content="2017-04-27">
-              2017-04-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/animation/AnimatorCompatHelper;</div></pre></td></tr></table></figure>
-<p>看到 NoClassDefFoundError 的时候，我就在想，以前还好好的，怎么就不行了呢？<br>然后看了看 External Libraries 列表，support 包版本怎么是 26.0.0-alpha1，我明明写的是 24.2.1 啊。</p>
-<p>解决方案：</p>
-<p>查看全部依赖都引用了哪些依赖<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradlew -q <span class="keyword">dependencies</span> app:<span class="keyword">dependencies</span> --configuration <span class="keyword">compile</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+--- cn.xxx.xxx:<span class="number">1</span>.x.x</div><div class="line">|    +--- cn.xx.xx:xx:<span class="number">1</span>.x.x</div><div class="line">|    |    +--- com.android.support:support-v4:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1 (*)</div><div class="line">|    |    \--- com.android.support:support-annotations:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1</div><div class="line">|    +--- com.android.support:support-v4:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1 (*)</div><div class="line">|    \--- com.android.support:support-annotations:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1</div></pre></td></tr></table></figure>
-<p>其中看到有个是这样的，直接 latest.release ，坑啊，我自己是引用 24.2.1 版本的，24 和 26 版本相差不小(移除了类是很有可能的)，<br>所以 sync project 后，项目会自动依赖到最高版本。</p>
-<p>知道原因就好办了，直接排除这个库的 support 引用：</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span>(<span class="string">'cn.xx.xx:xx:1.x.x'</span>, &#123;</div><div class="line">    <span class="keyword">exclude</span> <span class="keyword">group</span>: <span class="string">'com.android.support'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/19/install scrapy, Microsoft Visual C++ 14.0 is required/" itemprop="url">
-                  安装 Scrapy 出错，Microsoft Visual C++ 14.0 is required
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-19T00:00:00+08:00" content="2017-04-19">
-              2017-04-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">running build_ext</div><div class="line">building <span class="string">'twisted.test.raiser'</span> extension</div><div class="line">error: Microsoft Visual C++ 14.0 is required. Get it with <span class="string">"Microsoft Visual C++ Build Tools"</span>: http://landinghub.visualstudio.com/visual-cpp-build-tools</div></pre></td></tr></table></figure>
-<p>到 <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted" target="_blank" rel="external">http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted</a> 下载并安装 Twisted</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">D:\Download&gt;pip install Twisted-17.1.0-cp35-cp35m-win_amd64.whl</div><div class="line">Processing d:\qqdownload\twisted-17.1.0-cp35-cp35m-win_amd64.whl</div><div class="line">Requirement already satisfied: constantly&gt;=15.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted==17.1.0)</div><div class="line">Requirement already satisfied: incremental&gt;=16.10.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted==17.1.0)</div><div class="line">Requirement already satisfied: Automat&gt;=0.3.0 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted==17.1.0)</div><div class="line">Requirement already satisfied: zope.interface&gt;=4.0.2 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted==17.1.0)</div><div class="line">Requirement already satisfied: attrs <span class="keyword">in</span> c:\python3\lib\site-packages (from Automat&gt;=0.3.0-&gt;Twisted==17.1.0)</div><div class="line">Requirement already satisfied: six <span class="keyword">in</span> c:\python3\lib\site-packages (from Automat&gt;=0.3.0-&gt;Twisted==17.1.0)</div><div class="line">Requirement already satisfied: setuptools <span class="keyword">in</span> c:\python3\lib\site-packages (from zope.interface&gt;=4.0.2-&gt;Twisted==17.1.0)</div><div class="line">Installing collected packages: Twisted</div><div class="line">Successfully installed Twisted-17.1.0</div></pre></td></tr></table></figure>
-<p>之后再 pip install Scrapy 就可以了</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">E:\Python&gt;pip install Scrapy</div><div class="line">Collecting Scrapy</div><div class="line">  Using cached Scrapy-1.3.3-py2.py3-none-any.whl</div><div class="line">Requirement already satisfied: Twisted&gt;=13.1.0 <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: pyOpenSSL <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Collecting PyDispatcher&gt;=2.0.5 (from Scrapy)</div><div class="line">Requirement already satisfied: parsel&gt;=1.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: cssselect&gt;=0.9 <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: six&gt;=1.5.2 <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Collecting service-identity (from Scrapy)</div><div class="line">  Using cached service_identity-16.0.0-py2.py3-none-any.whl</div><div class="line">Requirement already satisfied: lxml <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: w3lib&gt;=1.15.0 <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: queuelib <span class="keyword">in</span> c:\python3\lib\site-packages (from Scrapy)</div><div class="line">Requirement already satisfied: incremental&gt;=16.10.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted&gt;=13.1.0-&gt;Scrapy)</div><div class="line">Requirement already satisfied: zope.interface&gt;=4.0.2 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted&gt;=13.1.0-&gt;Scrapy)</div><div class="line">Requirement already satisfied: Automat&gt;=0.3.0 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted&gt;=13.1.0-&gt;Scrapy)</div><div class="line">Requirement already satisfied: constantly&gt;=15.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from Twisted&gt;=13.1.0-&gt;Scrapy)</div><div class="line">Requirement already satisfied: cryptography&gt;=1.3.4 <span class="keyword">in</span> c:\python3\lib\site-packages (from pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: attrs <span class="keyword">in</span> c:\python3\lib\site-packages (from service-identity-&gt;Scrapy)</div><div class="line">Collecting pyasn1-modules (from service-identity-&gt;Scrapy)</div><div class="line">  Using cached pyasn1_modules-0.0.8-py2.py3-none-any.whl</div><div class="line">Requirement already satisfied: pyasn1 <span class="keyword">in</span> c:\python3\lib\site-packages (from service-identity-&gt;Scrapy)</div><div class="line">Requirement already satisfied: setuptools <span class="keyword">in</span> c:\python3\lib\site-packages (from zope.interface&gt;=4.0.2-&gt;Twisted&gt;=13.1.0-&gt;Scrapy)</div><div class="line">Requirement already satisfied: idna&gt;=2.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: packaging <span class="keyword">in</span> c:\python3\lib\site-packages (from cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: asn1crypto&gt;=0.21.0 <span class="keyword">in</span> c:\python3\lib\site-packages (from cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: cffi&gt;=1.4.1 <span class="keyword">in</span> c:\python3\lib\site-packages (from cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: pyparsing <span class="keyword">in</span> c:\python3\lib\site-packages (from packaging-&gt;cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Requirement already satisfied: pycparser <span class="keyword">in</span> c:\python3\lib\site-packages (from cffi&gt;=1.4.1-&gt;cryptography&gt;=1.3.4-&gt;pyOpenSSL-&gt;Scrapy)</div><div class="line">Installing collected packages: PyDispatcher, pyasn1-modules, service-identity, Scrapy</div><div class="line">Successfully installed PyDispatcher-2.0.5 Scrapy-1.3.3 pyasn1-modules-0.0.8 service-identity-16.0.0</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/28/python2-python3-supervisor/" itemprop="url">
-                  Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境
-                </a>
+                Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境
               
             
           </h1>
@@ -469,9 +274,7 @@
       
 
       
-        
-          
-            <h2 id="Centos6-5-python2-和-python3-共存下，supervisor-管理-python-web-进程，使用-virtualenv-创建独立环境"><a href="#Centos6-5-python2-和-python3-共存下，supervisor-管理-python-web-进程，使用-virtualenv-创建独立环境" class="headerlink" title="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境"></a>Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境</h2><p><a href="http://www.liaoxuefeng.com/article/0013738926914703df5e93589a14c19807f0e285194fe84000" target="_blank" rel="external">supervisor介绍</a></p>
+        <h2 id="Centos6-5-python2-和-python3-共存下，supervisor-管理-python-web-进程，使用-virtualenv-创建独立环境"><a href="#Centos6-5-python2-和-python3-共存下，supervisor-管理-python-web-进程，使用-virtualenv-创建独立环境" class="headerlink" title="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境"></a>Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境</h2><p><a href="http://www.liaoxuefeng.com/article/0013738926914703df5e93589a14c19807f0e285194fe84000" target="_blank" rel="external">supervisor介绍</a></p>
 <p>由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6<br>；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 python2.6 的工具不能用，比如 yum</p>
 <h4 id="安装-python3-5-3"><a href="#安装-python3-5-3" class="headerlink" title="安装 python3.5.3"></a>安装 python3.5.3</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget https://www.python.org/ftp/python/3.5.3/Python-3.5.3.tgz</div><div class="line">tar zxvf Python-3.5.3.tgz</div><div class="line"><span class="built_in">cd</span> Python-3.5.3.tgz</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/python3</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure>
 <p>如果直接运行 python3 提示没有找到，就运行下面这个语句<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -fs /usr/<span class="built_in">local</span>/python3/bin/python3 /usr/bin/python3</div></pre></td></tr></table></figure></p>
@@ -497,36 +300,58 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">supervisorctl reload</div><div class="line">supervisorctl status</div><div class="line">hcz                              RUNNING   pid 8605, uptime 0:00:07</div></pre></td></tr></table></figure>
 <p>OK</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/python2-python3-centos6-5-virtualenv/" rel="tag">#python2, python3, centos6.5, virtualenv</a>
+          
+        </div>
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/19/install scrapy, Microsoft Visual C++ 14.0 is required/" rel="prev" title="安装 Scrapy 出错，Microsoft Visual C++ 14.0 is required">
+                安装 Scrapy 出错，Microsoft Visual C++ 14.0 is required <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -534,6 +359,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -553,8 +382,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://avatars3.githubusercontent.com/u/9924409"
@@ -597,6 +435,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Centos6-5-python2-和-python3-共存下，supervisor-管理-python-web-进程，使用-virtualenv-创建独立环境"><span class="nav-number">1.</span> <span class="nav-text">Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-python3-5-3"><span class="nav-number">1.0.1.</span> <span class="nav-text">安装 python3.5.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-supervisor"><span class="nav-number">1.0.2.</span> <span class="nav-text">安装 supervisor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#virtualenv-介绍"><span class="nav-number">1.0.3.</span> <span class="nav-text">virtualenv 介绍</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -700,6 +549,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
