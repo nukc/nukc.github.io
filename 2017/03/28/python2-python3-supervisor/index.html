@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="python2, python3, centos6.5, virtualenv," />
+  <meta name="keywords" content="python3,python2,centos6.5,virtualenv," />
 
 
 
@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="「C」">
 <meta property="og:description" content="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境supervisor介绍
 由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 p">
-<meta property="og:updated_time" content="2017-05-05T04:10:59.000Z">
+<meta property="og:updated_time" content="2017-05-05T06:16:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Centos6.5：python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境">
 <meta name="twitter:description" content="Centos6.5: python2 和 python3 共存下，supervisor 管理 python web 进程，使用 virtualenv 创建独立环境supervisor介绍
@@ -278,6 +278,7 @@
 <p>由于 supervisor 目前不兼容 python3，而且在 centos6.5 ，默认 python 版本是2.6<br>；而自己做的项目是 python3.5，不能直接替换默认的2.6，只能共存，不然很多依赖于 python2.6 的工具不能用，比如 yum</p>
 <h4 id="安装-python3-5-3"><a href="#安装-python3-5-3" class="headerlink" title="安装 python3.5.3"></a>安装 python3.5.3</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget https://www.python.org/ftp/python/3.5.3/Python-3.5.3.tgz</div><div class="line">tar zxvf Python-3.5.3.tgz</div><div class="line"><span class="built_in">cd</span> Python-3.5.3.tgz</div><div class="line">./configure --prefix=/usr/<span class="built_in">local</span>/python3</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure>
 <p>如果直接运行 python3 提示没有找到，就运行下面这个语句<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -fs /usr/<span class="built_in">local</span>/python3/bin/python3 /usr/bin/python3</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <h4 id="安装-supervisor"><a href="#安装-supervisor" class="headerlink" title="安装 supervisor"></a>安装 supervisor</h4><p>使用 supervisor 进行管理 python web 进程<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip3 install supervisor</div></pre></td></tr></table></figure></p>
 <p>修改 /etc/supervisord.conf 配置文件，在最下面加上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[program:hcz]</div><div class="line">command     =python3 /usr/local/nginx/html/pyhcz/src/app.py</div><div class="line">directory   = /usr/local/nginx/html/pyhcz/src</div><div class="line">user        = www-data</div><div class="line">startsecs   = 3</div><div class="line"></div><div class="line">redirect_stderr         = true</div><div class="line">stdout_logfile_maxbytes = 50MB</div><div class="line">stdout_logfile_backups  = 10</div><div class="line">stdout_logfile          = /usr/local/nginx/html/pyhcz/app.log</div></pre></td></tr></table></figure></p>
 <p>command 指定命令，直接 python3 xx.py 是会报错的，<br>由于版本环境的问题，指定了 python3 也并不能切换到 3 的环境，<br>不知道是不是因为 supervisor 用的是 python2 的环境导致的，<br>导致后续执行所在的环境仍为2的。为了确保正确性，我再试一次。<br>依然报错：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FATAL     Exited too quickly (process <span class="built_in">log</span> may have details)</div></pre></td></tr></table></figure></p>
@@ -320,7 +321,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python2-python3-centos6-5-virtualenv/" rel="tag">#python2, python3, centos6.5, virtualenv</a>
+            <a href="/tags/python3/" rel="tag">#python3</a>
+          
+            <a href="/tags/python2/" rel="tag">#python2</a>
+          
+            <a href="/tags/centos6-5/" rel="tag">#centos6.5</a>
+          
+            <a href="/tags/virtualenv/" rel="tag">#virtualenv</a>
           
         </div>
       
@@ -413,7 +420,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
