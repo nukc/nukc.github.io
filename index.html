@@ -230,6 +230,301 @@
             
               
                 
+                <a class="post-title-link" href="/2017/07/11/config-h-file-not-found/" itemprop="url">
+                  'config.h' file not found
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-11T16:55:17+08:00" content="2017-07-11">
+              2017-07-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>升级 react-native 后，run 提示 ‘config.h’’ file not found，之后在 issues 下找到如下解决方法：</p>
+<p>Running into the same issue here after upgrading from 0.44. None of the above solutions or clearing caches did the trick for me. Here’s what I did to get things working again:</p>
+<ul>
+<li>In the Terminal, navigate to the react-native/third-party/glog folder inside node_modules (for me, this was cd node_modules/react-native/third-party/glog-0.3.4)</li>
+<li>Once actively in this folder, run ../../scripts/ios-configure-glog.sh</li>
+<li>Glog is configured and the required config.h header file is created for Xcode to find</li>
+</ul>
+<p><a href="https://github.com/facebook/react-native/issues/14382" target="_blank" rel="external">react-native/issues/14382</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/11/react-native-xcode-sh-No-such-file-or-directory/" itemprop="url">
+                  react-native-xcode.sh No such file or directory
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-11T16:48:37+08:00" content="2017-07-11">
+              2017-07-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Script-00DD1BFF1BD5951E006B06BC.sh: line 3: ../node_modules/react-native/packager/react-native-xcode.sh: No such file or directory</p>
+<p>我从0.45.1升到了0.46.0，然后就发生了这样的错，到 react-native 下查看确实没有 packager 文件夹，但在 scripts 下有 react-native-xcode.sh。<br>直接修改</p>
+<p><img src="/images/react-native-xcode.png" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/11/fetch的问题/" itemprop="url">
+                  fetch的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-11T16:47:23+08:00" content="2017-07-11">
+              2017-07-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用 fetch 的时候遇到了一个比较奇怪的问题，</p>
+<p>我的代码是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">fetch(api)</div><div class="line">    .then(<span class="keyword">this</span>.json)</div><div class="line">    .then(<span class="keyword">this</span>.unWrap)</div><div class="line">    .catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.warn(<span class="string">"get-error: "</span> + error + <span class="string">", api="</span> + api);</div><div class="line">        <span class="keyword">return</span> &#123;<span class="attr">success</span>: <span class="literal">false</span>, <span class="attr">msg</span>: error&#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> json = <span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"response"</span>, response);</div><div class="line">    <span class="keyword">let</span> json =  response.json();</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"json"</span>, json);</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="literal">null</span>, <span class="number">0</span>); <span class="comment">//加了这句后可解决问题</span></div><div class="line">    <span class="comment">//问题是这样的，正常来说，执行完 json 就会立即执行 unWrap,</span></div><div class="line">    <span class="comment">//但是程序在 log 了 json 后就没有往下走了，</span></div><div class="line">    <span class="keyword">return</span> json;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">static</span> unWrap = <span class="function">(<span class="params">responseJson</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"responseJson"</span>, responseJson);</div><div class="line">    <span class="keyword">if</span> (responseJson.status !== <span class="number">0</span> &amp;&amp; responseJson.status !== <span class="number">200</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> responseJson.msg;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">success</span>: <span class="literal">true</span>, <span class="attr">data</span>: responseJson.data&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>更多信息可到：<a href="https://github.com/facebook/react-native/issues/6679" target="_blank" rel="external">issues-6679</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/04/27/java.lang.NoClassDefFoundError/" itemprop="url">
                   java.lang.NoClassDefFoundError，坑爹的第三方库
                 </a>
@@ -547,7 +842,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -557,7 +852,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="android," />
+  <meta name="keywords" content="react-native,fetch," />
 
 
 
@@ -84,19 +84,22 @@
 
 
 
-<meta name="description" content="1java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/animation/AnimatorCompatHelper;
-看到 NoClassDefFoundError 的时候，我就在想，以前还好好的，怎么就不行了呢？然后看了看 External Libraries 列表，support 包版本怎么是 26">
+<meta name="description" content="使用 fetch 的时候遇到了一个比较奇怪的问题，
+我的代码是这样的：
+1234567fetch(api)    .then(this.json)    .then(this.unWrap)    .catch((error) =&amp;gt; &amp;#123;        console.warn(&quot;get-error: &quot; + error + &quot;, api=&quot; + api);        retur">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java.lang.NoClassDefFoundError，坑爹的第三方库">
-<meta property="og:url" content="http://nukc.github.io/2017/04/27/java.lang.NoClassDefFoundError/index.html">
+<meta property="og:title" content="fetch的问题">
+<meta property="og:url" content="http://nukc.github.io/2017/07/11/fetch的问题/index.html">
 <meta property="og:site_name" content="「C」">
-<meta property="og:description" content="1java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/animation/AnimatorCompatHelper;
-看到 NoClassDefFoundError 的时候，我就在想，以前还好好的，怎么就不行了呢？然后看了看 External Libraries 列表，support 包版本怎么是 26">
-<meta property="og:updated_time" content="2017-05-05T06:15:25.000Z">
+<meta property="og:description" content="使用 fetch 的时候遇到了一个比较奇怪的问题，
+我的代码是这样的：
+1234567fetch(api)    .then(this.json)    .then(this.unWrap)    .catch((error) =&amp;gt; &amp;#123;        console.warn(&quot;get-error: &quot; + error + &quot;, api=&quot; + api);        retur">
+<meta property="og:updated_time" content="2017-07-11T08:47:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java.lang.NoClassDefFoundError，坑爹的第三方库">
-<meta name="twitter:description" content="1java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/animation/AnimatorCompatHelper;
-看到 NoClassDefFoundError 的时候，我就在想，以前还好好的，怎么就不行了呢？然后看了看 External Libraries 列表，support 包版本怎么是 26">
+<meta name="twitter:title" content="fetch的问题">
+<meta name="twitter:description" content="使用 fetch 的时候遇到了一个比较奇怪的问题，
+我的代码是这样的：
+1234567fetch(api)    .then(this.json)    .then(this.unWrap)    .catch((error) =&amp;gt; &amp;#123;        console.warn(&quot;get-error: &quot; + error + &quot;, api=&quot; + api);        retur">
 
 
 
@@ -114,7 +117,7 @@
   };
 </script>
 
-  <title> java.lang.NoClassDefFoundError，坑爹的第三方库 | 「C」 </title>
+  <title> fetch的问题 | 「C」 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -234,7 +237,7 @@
             
             
               
-                java.lang.NoClassDefFoundError，坑爹的第三方库
+                fetch的问题
               
             
           </h1>
@@ -246,8 +249,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-27T00:00:00+08:00" content="2017-04-27">
-              2017-04-27
+            <time itemprop="dateCreated" datetime="2017-07-11T16:47:23+08:00" content="2017-07-11">
+              2017-07-11
             </time>
           </span>
 
@@ -274,14 +277,12 @@
       
 
       
-        <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/animation/AnimatorCompatHelper;</div></pre></td></tr></table></figure>
-<p>看到 NoClassDefFoundError 的时候，我就在想，以前还好好的，怎么就不行了呢？<br>然后看了看 External Libraries 列表，support 包版本怎么是 26.0.0-alpha1，我明明写的是 24.2.1 啊。</p>
-<p>解决方案：</p>
-<p>查看全部依赖都引用了哪些依赖<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gradlew -q <span class="keyword">dependencies</span> app:<span class="keyword">dependencies</span> --configuration <span class="keyword">compile</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+--- cn.xxx.xxx:<span class="number">1</span>.x.x</div><div class="line">|    +--- cn.xx.xx:xx:<span class="number">1</span>.x.x</div><div class="line">|    |    +--- com.android.support:support-v4:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1 (*)</div><div class="line">|    |    \--- com.android.support:support-annotations:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1</div><div class="line">|    +--- com.android.support:support-v4:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1 (*)</div><div class="line">|    \--- com.android.support:support-annotations:latest.release -&gt; <span class="number">26.0</span>.<span class="number">0</span>-alpha1</div></pre></td></tr></table></figure>
-<p>其中看到有个是这样的，直接 latest.release ，坑啊，我自己是引用 24.2.1 版本的，24 和 26 版本相差不小(移除了类是很有可能的)，<br>所以 sync project 后，项目会自动依赖到最高版本。</p>
-<p>知道原因就好办了，直接排除这个库的 support 引用：</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span>(<span class="string">'cn.xx.xx:xx:1.x.x'</span>, &#123;</div><div class="line">    <span class="keyword">exclude</span> <span class="keyword">group</span>: <span class="string">'com.android.support'</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+        <p>使用 fetch 的时候遇到了一个比较奇怪的问题，</p>
+<p>我的代码是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">fetch(api)</div><div class="line">    .then(<span class="keyword">this</span>.json)</div><div class="line">    .then(<span class="keyword">this</span>.unWrap)</div><div class="line">    .catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.warn(<span class="string">"get-error: "</span> + error + <span class="string">", api="</span> + api);</div><div class="line">        <span class="keyword">return</span> &#123;<span class="attr">success</span>: <span class="literal">false</span>, <span class="attr">msg</span>: error&#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> json = <span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"response"</span>, response);</div><div class="line">    <span class="keyword">let</span> json =  response.json();</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"json"</span>, json);</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="literal">null</span>, <span class="number">0</span>); <span class="comment">//加了这句后可解决问题</span></div><div class="line">    <span class="comment">//问题是这样的，正常来说，执行完 json 就会立即执行 unWrap,</span></div><div class="line">    <span class="comment">//但是程序在 log 了 json 后就没有往下走了，</span></div><div class="line">    <span class="keyword">return</span> json;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">static</span> unWrap = <span class="function">(<span class="params">responseJson</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"responseJson"</span>, responseJson);</div><div class="line">    <span class="keyword">if</span> (responseJson.status !== <span class="number">0</span> &amp;&amp; responseJson.status !== <span class="number">200</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> responseJson.msg;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> &#123;<span class="attr">success</span>: <span class="literal">true</span>, <span class="attr">data</span>: responseJson.data&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>更多信息可到：<a href="https://github.com/facebook/react-native/issues/6679" target="_blank" rel="external">issues-6679</a></p>
+
       
     </div>
 
@@ -302,7 +303,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/android/" rel="tag">#android</a>
+            <a href="/tags/react-native/" rel="tag">#react-native</a>
+          
+            <a href="/tags/fetch/" rel="tag">#fetch</a>
           
         </div>
       
@@ -311,16 +314,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/19/install scrapy, Microsoft Visual C++ 14.0 is required/" rel="next" title="安装 Scrapy 出错，Microsoft Visual C++ 14.0 is required">
-                <i class="fa fa-chevron-left"></i> 安装 Scrapy 出错，Microsoft Visual C++ 14.0 is required
+              <a href="/2017/04/27/java.lang.NoClassDefFoundError/" rel="next" title="java.lang.NoClassDefFoundError，坑爹的第三方库">
+                <i class="fa fa-chevron-left"></i> java.lang.NoClassDefFoundError，坑爹的第三方库
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/11/fetch的问题/" rel="prev" title="fetch的问题">
-                fetch的问题 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/11/react-native-xcode-sh-No-such-file-or-directory/" rel="prev" title="react-native-xcode.sh No such file or directory">
+                react-native-xcode.sh No such file or directory <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
