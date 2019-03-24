@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="C君, Nukc, Github,"> 
-    <meta name="description" content="前因除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，作为合作伙伴的我们，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。,"> 
+    <meta name="description" content="前因除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，由于某些原因，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。。好吧,"> 
     <meta name="author" content="Nukc"> 
     <link rel="alternative" href="atom.xml" title="「C」" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
+    
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
     <link rel="stylesheet" href="/css/diaspora.css">
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -63,11 +63,11 @@
 
         </div>
         <div class="content markdown">
-            <h3 id="前因"><a href="#前因" class="headerlink" title="前因"></a>前因</h3><p>除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，作为合作伙伴的我们，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。。好吧，只能一个个找了。</p>
-<p>使用 Chrome 浏览器的 Wappalyzer 插件可以看到服务器使用了 Nginx 反向代理，那就好办多了，查看配置文件就可以知道项目所在。</p>
+            <h3 id="前因"><a href="#前因" class="headerlink" title="前因"></a>前因</h3><p>除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，由于某些原因，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。。好吧，只能一个个找了。</p>
+<p>使用 Chrome 浏览器的 Wappalyzer 插件可以看到服务器使用了 Nginx 反向代理（也可以 <code>whereis nginx</code> 看下），那就好办多了，查看配置文件就可以知道项目所在。</p>
 <p>为了避免不必要的麻烦，各环境都尽量装相同或者接近的版本。这次迁移比较特殊，因为不能保证迁移完成后无需再迁移。我想大家都不想一遍又一遍的安装环境吧，当然自己编写安装脚本也是可以的。<br>另外，使用 docker 的话，也可以很好的解决这个问题，<a href="https://hub.docker.com/" target="_blank" rel="external">DockerHub</a> 每个账号也可以有一个免费的私有仓库，做好容器后 push，新服务器再 pull 下来，很是方便。</p>
 <p>docker 大名好久以前就听过，但是一直都没有去接触，这次需求来了，我的一贯做法是先去花点时间<a href="http://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="external">简单入个门</a>，然后开始上手，遇到问题再具体搜索相应的解决办法。</p>
-<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><p>如下是直接 Copy 的，服务器是 CentOS 7。</p>
+<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><p>以下安装方法是直接 Copy 的，服务器是 CentOS 7。</p>
 <p>从 2017 年 3 月开始 docker 在原来的基础上分为两个分支版本: Docker CE 和 Docker EE。<br>Docker CE 即社区免费版，Docker EE 即企业版，强调安全，但需付费使用。<br>本文介绍 Docker CE 的安装使用。</p>
 <p>移除旧的版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ sudo yum remove docker \</div><div class="line">                  docker-client \</div><div class="line">                  docker-client-latest \</div><div class="line">                  docker-common \</div><div class="line">                  docker-latest \</div><div class="line">                  docker-latest-logrotate \</div><div class="line">                  docker-logrotate \</div><div class="line">                  docker-selinux \</div><div class="line">                  docker-engine-selinux \</div><div class="line">                  docker-engine</div></pre></td></tr></table></figure></p>
 <p>安装一些必要的系统工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</div></pre></td></tr></table></figure></p>
@@ -99,23 +99,17 @@
 </li>
 <li><p>主环境<br><code>docker run -it -d --net=host --privileged=true -v /home:/home --restart=always xx/centos:v1.0 /bin/bash</code><br>xx/centos:v1.0 是容器镜像的名字版本，我是基于 centos 容器做的，在容器里面装好各种环境，确保运行最新的版本，可通过如下命令查看</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[nukc@ec ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">xx/centos           v1.3                a6f21ddb92db        3 days ago          23.9GB</div><div class="line">xx/centos           v1.2                1f948192ecaa        6 days ago          23.3GB</div><div class="line">xx/centos           v1.1                adcf4b959180        8 days ago          23.1GB</div><div class="line">xx/centos           v1                  6a287c9345db        9 days ago          22.9GB</div><div class="line">xx/centos           latest              82c6154682c9        10 days ago         22.9GB</div><div class="line">mariadb             latest              e93652b8b80d        12 days ago         368MB</div><div class="line">centos              centos6             0cbf37812bff        5 months ago        194MB</div></pre></td></tr></table></figure>
-<p>大小很大，唉，还是不吐槽他们的开发者了</p>
+<p>大小很大，唉，还是不吐槽他们的项目开发了</p>
 <p>如下命令可以看到正在运行的容器，加上 <code>-a</code> 可以看到全部，因为是使用 <code>--net=host</code>，所以 PORTS 是看不到的</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[nukc@ec ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES</div><div class="line">427baa8ca92a        mariadb                <span class="string">"docker-entrypoint.s…"</span>   36 hours ago        Up 36 hours                             unruffled_feistel</div><div class="line">f40bb958b69e        xx/centos:v1.3         <span class="string">"/bin/bash"</span>              36 hours ago        Up 36 hours                             vibrant_noether</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[nukc@ec ~]<span class="comment"># docker ps</span></div><div class="line">    CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES</div><div class="line">    427baa8ca92a        mariadb                <span class="string">"docker-entrypoint.s…"</span>   36 hours ago        Up 36 hours                             unruffled_feistel</div><div class="line">    f40bb958b69e        xx/centos:v1.3         <span class="string">"/bin/bash"</span>              36 hours ago        Up 36 hours                             vibrant_noether</div></pre></td></tr></table></figure>
+<p>进入容器内，f40bb958b69 为 CONTAINER ID<br><code>docker exec -it f40bb958b69e /bin/bash</code></p>
+<p>保存容器镜像，一般都是只修改版本，当然也可以改成另一个名字，当然修改后别忘了 push 到仓库上<br><code>docker commit f40bb958b69 xx/centos:v1.4</code></p>
+</li>
+<li><p>App 的服务器</p>
+<p>我最先迁移的就是 App 的服务器，这个我是把数据库和主环境都塞进了一个容器中<br><code>docker run -it -d --net=host xx/xxx:ban</code></p>
 </li>
 </ul>
 </li>
-</ul>
-<pre><code>进入容器内，f40bb958b69 为 CONTAINER ID
-``docker exec -it f40bb958b69e /bin/bash``
-
-保存容器镜像，一般都是只修改版本，当然也可以改成另一个名字，当然修改后别忘了 push 到仓库上
-``docker commit f40bb958b69 xx/centos:v1.4``
-
-- App 的服务器
-我最先迁移的就是 App 的服务器，这个我是把数据库和主环境都塞进了一个容器中
-``docker run -it -d --net=host xx/xxx:ban``
-</code></pre><ul>
 <li><p>关于重启容器后，各容器内的服务都没有自动启动的问题<br>  虽然我已经是 <code>chkconfig xx on</code> 进行了设置，但并没有达到目的，目前每次都是 run 容器后，再 exec 进入启动相应的服务，比如</p>
 <ul>
 <li><p>App </p>
@@ -128,10 +122,8 @@
 </li>
 </ul>
 </li>
-<li><p>后果</p>
-</li>
 </ul>
-<p>虽然刚开始花了点时间，但是收获还是很值得的，要是服务器再炸了，直接 pull 就完事了</p>
+<h3 id="后果"><a href="#后果" class="headerlink" title="后果"></a>后果</h3><p>虽然刚开始花了点时间，但是收获还是很值得的，要是服务器再炸了，直接 pull 就完事了</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
@@ -225,6 +217,18 @@
 </div>
 
 
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-102422989-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
 
 
 </html>
