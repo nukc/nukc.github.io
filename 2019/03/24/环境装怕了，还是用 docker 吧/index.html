@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>环境装怕了，还是用 docker 吧 - 「C」</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="C君, Nukc, Github,"> 
+    <meta name="description" content="前因除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，作为合作伙伴的我们，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。,"> 
+    <meta name="author" content="Nukc"> 
+    <link rel="alternative" href="atom.xml" title="「C」" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+</head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">「C」</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;" data-url="http://nukc.github.io"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">环境装怕了，还是用 docker 吧</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">环境装怕了，还是用 docker 吧</h1>
+        <div class="stuff">
+            <span>三月 24, 2019</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/docker/">docker</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <h3 id="前因"><a href="#前因" class="headerlink" title="前因"></a>前因</h3><p>除了兴趣，很多时候技能也是跟着需求走的；这一次某站需要迁移服务器，某站无技术，作为合作伙伴的我们，接手了这个工作，迁移工作比想象中的麻烦的多，全部项目都没有文档，只有几个服务器 IP 账号密码。。好吧，只能一个个找了。</p>
+<p>使用 Chrome 浏览器的 Wappalyzer 插件可以看到服务器使用了 Nginx 反向代理，那就好办多了，查看配置文件就可以知道项目所在。</p>
+<p>为了避免不必要的麻烦，各环境都尽量装相同或者接近的版本。这次迁移比较特殊，因为不能保证迁移完成后无需再迁移。我想大家都不想一遍又一遍的安装环境吧，当然自己编写安装脚本也是可以的。<br>另外，使用 docker 的话，也可以很好的解决这个问题，<a href="https://hub.docker.com/" target="_blank" rel="external">DockerHub</a> 每个账号也可以有一个免费的私有仓库，做好容器后 push，新服务器再 pull 下来，很是方便。</p>
+<p>docker 大名好久以前就听过，但是一直都没有去接触，这次需求来了，我的一贯做法是先去花点时间<a href="http://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="external">简单入个门</a>，然后开始上手，遇到问题再具体搜索相应的解决办法。</p>
+<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><p>如下是直接 Copy 的，服务器是 CentOS 7。</p>
+<p>从 2017 年 3 月开始 docker 在原来的基础上分为两个分支版本: Docker CE 和 Docker EE。<br>Docker CE 即社区免费版，Docker EE 即企业版，强调安全，但需付费使用。<br>本文介绍 Docker CE 的安装使用。</p>
+<p>移除旧的版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ sudo yum remove docker \</div><div class="line">                  docker-client \</div><div class="line">                  docker-client-latest \</div><div class="line">                  docker-common \</div><div class="line">                  docker-latest \</div><div class="line">                  docker-latest-logrotate \</div><div class="line">                  docker-logrotate \</div><div class="line">                  docker-selinux \</div><div class="line">                  docker-engine-selinux \</div><div class="line">                  docker-engine</div></pre></td></tr></table></figure></p>
+<p>安装一些必要的系统工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</div></pre></td></tr></table></figure></p>
+<p>添加软件源信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</div></pre></td></tr></table></figure></p>
+<p>更新 yum 缓存：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum makecache fast</div></pre></td></tr></table></figure></p>
+<p>安装 Docker-ce：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum -y install docker-ce</div></pre></td></tr></table></figure></p>
+<p>启动 Docker 后台服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start docker</div></pre></td></tr></table></figure></p>
+<p>测试运行 hello-world (由于本地没有hello-world这个镜像，所以会下载一个hello-world的镜像，并在容器内运行。)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run hello-world</div></pre></td></tr></table></figure></p>
+<h3 id="使用过程中的小记"><a href="#使用过程中的小记" class="headerlink" title="使用过程中的小记"></a>使用过程中的小记</h3><ul>
+<li><p>登录<br>  <code>docker login</code></p>
+</li>
+<li><p>把远程仓库的容器下载下来<br>  <code>docker pull xx/centos</code></p>
+</li>
+<li><p>创建bridge网络：（多个容器之间互相访问的其中一个做法）<br>  <code>docker network create dbnet</code></p>
+</li>
+<li><p>自启动（docker服务重启后容器也自动重启）<br>  <code>--restart=always</code></p>
+</li>
+<li><p>如果已经启动了则可以使用如下命令：<br>  <code>docker update *--restart=always &lt;CONTAINER ID&gt;*</code></p>
+</li>
+<li><p>解决容器内 Nginx 无法获取到用户的真实IP<br>  <code>--net=host</code></p>
+</li>
+<li><p>端口，可以多个<br>  <code>-p 80:80 -p 3306:3306</code></p>
+</li>
+<li><p>把容器里的 /home 挂载到宿主的 /home（这样项目目录的数据就放在了宿主挂载点上）<br>  <code>-v /home:/home</code></p>
+</li>
+<li><p>运行容器<br>  我的实例（- -!）还是方便以后自己再看的时候，所以文章我并不是要写成教学<br>  主站我是把数据库和主环境分开各自弄了个容器，数据库的配置（方便修改配置，因为是直接 pull 的数据库，进入容器也是修改不了，因为 vi 也用不了）和数据文件也是挂载到了宿主目录上</p>
+<ul>
+<li><p>数据库（如果挂载有数据的数据卷时，可以不用 <code>MYSQL_ROOT_PASSWORD</code> 这个参数。）运行成功后，迁移数据库的话，我是用 Navicat（win 版才好用） 进行迁移的。<br><code>docker run -d -p 3306:3306 --net=host -e MYSQL_ROOT_PASSWORD=xxxxxxxxxx -v /home/data/mariadb:/var/lib/mysql -v /etc/mysql:/etc/mysql --restart=always mariadb</code></p>
+</li>
+<li><p>主环境<br><code>docker run -it -d --net=host --privileged=true -v /home:/home --restart=always xx/centos:v1.0 /bin/bash</code><br>xx/centos:v1.0 是容器镜像的名字版本，我是基于 centos 容器做的，在容器里面装好各种环境，确保运行最新的版本，可通过如下命令查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[nukc@ec ~]<span class="comment"># docker images</span></div><div class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">xx/centos           v1.3                a6f21ddb92db        3 days ago          23.9GB</div><div class="line">xx/centos           v1.2                1f948192ecaa        6 days ago          23.3GB</div><div class="line">xx/centos           v1.1                adcf4b959180        8 days ago          23.1GB</div><div class="line">xx/centos           v1                  6a287c9345db        9 days ago          22.9GB</div><div class="line">xx/centos           latest              82c6154682c9        10 days ago         22.9GB</div><div class="line">mariadb             latest              e93652b8b80d        12 days ago         368MB</div><div class="line">centos              centos6             0cbf37812bff        5 months ago        194MB</div></pre></td></tr></table></figure>
+<p>大小很大，唉，还是不吐槽他们的开发者了</p>
+<p>如下命令可以看到正在运行的容器，加上 <code>-a</code> 可以看到全部，因为是使用 <code>--net=host</code>，所以 PORTS 是看不到的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[nukc@ec ~]<span class="comment"># docker ps</span></div><div class="line">CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES</div><div class="line">427baa8ca92a        mariadb                <span class="string">"docker-entrypoint.s…"</span>   36 hours ago        Up 36 hours                             unruffled_feistel</div><div class="line">f40bb958b69e        xx/centos:v1.3         <span class="string">"/bin/bash"</span>              36 hours ago        Up 36 hours                             vibrant_noether</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>进入容器内，f40bb958b69 为 CONTAINER ID
+``docker exec -it f40bb958b69e /bin/bash``
+
+保存容器镜像，一般都是只修改版本，当然也可以改成另一个名字，当然修改后别忘了 push 到仓库上
+``docker commit f40bb958b69 xx/centos:v1.4``
+
+- App 的服务器
+我最先迁移的就是 App 的服务器，这个我是把数据库和主环境都塞进了一个容器中
+``docker run -it -d --net=host xx/xxx:ban``
+</code></pre><ul>
+<li><p>关于重启容器后，各容器内的服务都没有自动启动的问题<br>  虽然我已经是 <code>chkconfig xx on</code> 进行了设置，但并没有达到目的，目前每次都是 run 容器后，再 exec 进入启动相应的服务，比如</p>
+<ul>
+<li><p>App </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">service nginx restart</div><div class="line">service php-fpm start</div><div class="line">service mysqld start</div><div class="line">redis-server /etc/redis.conf</div></pre></td></tr></table></figure>
+</li>
+<li><p>主站</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">service nginx restart</div><div class="line">service php-fpm start</div></pre></td></tr></table></figure>
+<p>因为主站的数据库是容器分开，直接 run 挂载数据库文件和配置就可以了。</p>
+<p>服务随容器启动而自启动需要另外花时间研究，目前有想过写个简单的启动脚本，然后再 run 的时候执行这个脚本</p>
+</li>
+</ul>
+</li>
+<li><p>后果</p>
+</li>
+</ul>
+<p>虽然刚开始花了点时间，但是收获还是很值得的，要是服务器再炸了，直接 pull 就完事了</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
